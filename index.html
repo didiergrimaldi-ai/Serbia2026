@@ -1,556 +1,234 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Viatge a Sèrbia – Agost 2026</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --red: #B8302A;
-      --red-dark: #8f211c;
-      --bg: #ffffff;
-      --bg2: #f5f4f1;
-      --text: #1a1a18;
-      --muted: #6b6a65;
-      --border: rgba(0,0,0,0.1);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #1e1e1c;
-        --bg2: #282825;
-        --text: #f0efe8;
-        --muted: #9b9a94;
-        --border: rgba(255,255,255,0.1);
-      }
-    }
-
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg2);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 0 0 40px;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 430px;
-      background: var(--bg2);
-      min-height: 100vh;
-    }
-
-    .header {
-      background: var(--red);
-      color: white;
-      padding: 24px 16px 0;
-    }
-
-    .header h1 { font-size: 24px; font-weight: 600; letter-spacing: -0.4px; }
-    .header .sub { font-size: 13px; opacity: 0.82; margin-top: 3px; padding-bottom: 14px; }
-
-    .tabs {
-      display: flex;
-      gap: 6px;
-      padding: 10px 16px 0;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .tabs::-webkit-scrollbar { display: none; }
-
-    .tab {
-      background: rgba(255,255,255,0.22);
-      color: white;
-      border: none;
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-family: inherit;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s;
-      margin-bottom: 10px;
-    }
-    .tab.active { background: white; color: var(--red); font-weight: 500; }
-    .tab:hover:not(.active) { background: rgba(255,255,255,0.33); }
-
-    .content {
-      padding: 12px 12px 30px;
-    }
-
-    .day-section { margin-bottom: 10px; }
-
-    .day-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 4px 8px;
-    }
-
-    .day-badge {
-      background: var(--red);
-      color: white;
-      border-radius: 12px;
-      font-size: 11px;
-      padding: 3px 10px;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-
-    .day-title {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text);
-    }
-
-    .activity {
-      background: var(--bg);
-      border-radius: 12px;
-      margin: 0 0 8px;
-      padding: 12px 14px;
-      border: 0.5px solid var(--border);
-    }
-
-    .act-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .act-name {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--text);
-      line-height: 1.3;
-    }
-
-    .act-name a { color: var(--red); text-decoration: none; }
-    .act-name a:hover { text-decoration: underline; }
-
-    .act-sub {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 5px;
-      line-height: 1.5;
-    }
-
-    .badge {
-      border-radius: 10px;
-      font-size: 11px;
-      padding: 3px 9px;
-      white-space: nowrap;
-      flex-shrink: 0;
-      font-weight: 400;
-    }
-
-    .badge-free  { background: #EAF3DE; color: #3B6D11; }
-    .badge-info  { background: #E6F1FB; color: #185FA5; }
-    .badge-amber { background: #FAEEDA; color: #854F0B; }
-    .badge-red   { background: #FCEBEB; color: #A32D2D; }
-
-    @media (prefers-color-scheme: dark) {
-      .badge-free  { background: #1a2e0a; color: #8fc45a; }
-      .badge-info  { background: #0a1e33; color: #6db3f2; }
-      .badge-amber { background: #2e1c00; color: #f0aa44; }
-      .badge-red   { background: #2e0a0a; color: #f08080; }
-    }
-
-    .hotel-bar {
-      background: var(--bg2);
-      border-radius: 8px;
-      padding: 8px 12px;
-      margin: 0 0 8px;
-      border: 0.5px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .hotel-bar i { color: var(--red); font-size: 16px; }
-    .hotel-name { font-weight: 500; color: var(--text); }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .stat-card {
-      background: var(--bg);
-      border-radius: 10px;
-      padding: 1rem;
-      text-align: center;
-      border: 0.5px solid var(--border);
-    }
-
-    .stat-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-    .stat-val { font-size: 26px; font-weight: 500; color: var(--text); }
-
-    .hidden { display: none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viatge a Sèrbia · Agost 2025</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.19.0/fonts/tabler-icons.min.css"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; }
+  .header { background: #185FA5; color: #fff; padding: 16px 20px; }
+  .header h1 { font-size: 18px; font-weight: 600; }
+  .header p { font-size: 13px; opacity: 0.8; margin-top: 2px; }
+  .container { max-width: 720px; margin: 0 auto; padding: 16px; }
+  .stop-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .stop-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 8px 12px; cursor: pointer; font-family: inherit; text-align: left; }
+  .stop-btn.active { border: 2px solid #185FA5; background: #E6F1FB; }
+  .stop-btn .day { font-size: 11px; color: #666; }
+  .stop-btn .name { font-size: 13px; font-weight: 500; color: #1a1a1a; }
+  .map-wrap { border-radius: 12px; overflow: hidden; border: 1px solid #ddd; margin-bottom: 10px; }
+  #map { width: 100%; height: 380px; }
+  .nav-big { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 600; color: #fff; background: #185FA5; text-decoration: none; padding: 12px 20px; border-radius: 10px; width: 100%; margin-bottom: 16px; }
+  .hotel-bar { display: flex; align-items: center; gap: 10px; background: #f0f0ea; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; }
+  .hotel-bar i { font-size: 20px; color: #185FA5; }
+  .hotel-bar .hname { font-size: 14px; font-weight: 600; }
+  .hotel-bar .hsub { font-size: 12px; color: #666; margin-top: 1px; }
+  .day-block { border-left: 2px solid #ddd; padding: 0 0 16px 14px; position: relative; margin-left: 4px; }
+  .day-block:last-child { padding-bottom: 0; }
+  .day-dot { position: absolute; left: -6px; top: 3px; width: 10px; height: 10px; border-radius: 50%; background: #185FA5; border: 2px solid #f5f5f0; }
+  .day-label { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .act-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+  .act-item i { font-size: 16px; color: #378ADD; flex-shrink: 0; margin-top: 1px; }
+  .act-text { font-size: 14px; color: #1a1a1a; line-height: 1.5; }
+  .tip-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; padding: 3px 9px; border-radius: 10px; margin-top: 4px; }
+  .tip-warn { background: #FAEEDA; color: #854F0B; }
+  .tip-info { background: #E6F1FB; color: #185FA5; }
+  .tip-ok { background: #EAF3DE; color: #3B6D11; }
+</style>
 </head>
 <body>
-<div class="app">
 
-  <div class="header">
-    <h1>Viatge a Sèrbia</h1>
-    <div class="sub">Agost 2026 · Belgrad · Djerdap · Studenica · Tara · Durmitor</div>
-    <div class="tabs">
-      <button class="tab active" onclick="showTab('pla',this)">Pla</button>
-      <button class="tab" onclick="showTab('vols',this)">Vols</button>
-      <button class="tab" onclick="showTab('allotjaments',this)">Allotjaments</button>
-      <button class="tab" onclick="showTab('pressupost',this)">Pressupost</button>
-    </div>
+<div class="header">
+  <h1>🗺 Viatge a Sèrbia · Agost 2025</h1>
+  <p>Mapa d'allotjaments i activitats</p>
+</div>
+
+<div class="container">
+
+  <div class="stop-row">
+    <button class="stop-btn active" onclick="showStop(0,this)"><span class="day">1–3 ag</span><span class="name">Belgrad</span></button>
+    <button class="stop-btn" onclick="showStop(1,this)"><span class="day">3–6 ag</span><span class="name">Djerdap</span></button>
+    <button class="stop-btn" onclick="showStop(2,this)"><span class="day">6–7 ag</span><span class="name">Studenica</span></button>
+    <button class="stop-btn" onclick="showStop(3,this)"><span class="day">7–10 ag</span><span class="name">Tara</span></button>
+    <button class="stop-btn" onclick="showStop(4,this)"><span class="day">10–12 ag</span><span class="name">Žabljak</span></button>
+    <button class="stop-btn" onclick="showStop(5,this)"><span class="day">Ruta completa</span><span class="name">Tot el viatge</span></button>
   </div>
 
-  <div class="content">
+  <div class="map-wrap">
+    <div id="map"></div>
+  </div>
 
-    <!-- PLA -->
-    <div id="tab-pla">
+  <a id="nav-btn" href="https://www.google.com/maps/dir/?api=1&destination=44.8155756,20.4575349" target="_blank" class="nav-big">
+    <i class="ti ti-navigation"></i>
+    <span id="nav-label">Navegar a High Note Suites</span>
+  </a>
 
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Dim 1 ag. 2026</span>
-          <span class="day-title">Arribada &amp; Belgrad</span>
-        </div>
-        <div class="hotel-bar"><i class="ti ti-bed"></i><span>Dormim: <span class="hotel-name">High Note Suites</span></span></div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">✈ Arribada a Belgrad (BEG)</div>
-            <span class="badge badge-info">9:55 → 12:30</span>
-          </div>
-          <div class="act-sub">Instal·lació a l'hotel. Tarda lliure.</div>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Fortalesa Kalemegdan</div>
-            <span class="badge badge-free">Gratuït</span>
-          </div>
-          <div class="act-sub">Barri i fortalesa icònica de Belgrad.</div>
-        </div>
-      </div>
+  <div id="info-panel"></div>
 
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Dil 2 ag.</span>
-          <span class="day-title">Novi Sad</span>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Recollida del cotxe de lloguer</div>
-            <span class="badge badge-amber">Cotxe</span>
-          </div>
-          <div class="act-sub">Inici de la ruta en cotxe per Sèrbia.</div>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Salas – Granges rurals</div>
-            <span class="badge badge-free">Típic</span>
-          </div>
-          <div class="act-sub">Dinar amb menjar local casolà en granges rurals.</div>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Fortalesa Petrovaradin</div>
-            <span class="badge badge-free">Gratuït</span>
-          </div>
-          <div class="act-sub">Icona de Novi Sad sobre el Danubi.</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Mar 3 ag.</span>
-          <span class="day-title">Smederevo → Djerdap</span>
-        </div>
-        <div class="hotel-bar"><i class="ti ti-bed"></i><span>Dormim: <span class="hotel-name">Apartments Dusica Tekija – Djerdap</span></span></div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Fortalesa de Smederevo</div>
-            <span class="badge badge-info">Camp</span>
-          </div>
-          <div class="act-sub">La fortalesa de camp més gran d'Europa.</div>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Fortalesa de Golubac</div>
-            <span class="badge badge-info">Medieval</span>
-          </div>
-          <div class="act-sub">Espectacular fortalesa medieval a la riba del Danubi.</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Dij 4 ag.</span>
-          <span class="day-title">Parc Natural Djerdap</span>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">🚢 Excursió en vaixell pel Danubi</div>
-            <span class="badge badge-amber">~15€/pers</span>
-          </div>
-          <div class="act-sub">Reserva a les 10h. Patriot Boat Tours.<br>
-            <a href="https://krstarenjedjerdapom.com/" target="_blank" rel="noopener">krstarenjedjerdapom.com</a>
-          </div>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Portes de Ferro (Đerdap)</div>
-            <span class="badge badge-info">UNESCO</span>
-          </div>
-          <div class="act-sub">El canó més llarg d'Europa (130 km). Tram més estret del Danubi.</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Div 5 ag.</span>
-          <span class="day-title">Mirador Veliki Štrbac</span>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Mirador Veliki Štrbac</div>
-            <span class="badge badge-free">Panoràmic</span>
-          </div>
-          <div class="act-sub">Una de les millors vistes de Sèrbia sobre el Danubi.</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Dis 6 ag.</span>
-          <span class="day-title">Monestir de Studenica</span>
-        </div>
-        <div class="hotel-bar"><i class="ti ti-bed"></i><span>Dormim: <span class="hotel-name">Konak Studenica 1186</span></span></div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Monestir de Studenica</div>
-            <span class="badge badge-free">Gratuït</span>
-          </div>
-          <div class="act-sub">Patrimoni de la UNESCO. Obert de 7:00 a 21:00h (no dilluns). Visita de 3h aprox. 5h de camí des de Djerdap.</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Diu 7 ag.</span>
-          <span class="day-title">Parc Nacional Tara</span>
-        </div>
-        <div class="hotel-bar"><i class="ti ti-bed"></i><span>Dormim: <span class="hotel-name">Apartmani Romansa Perućac</span></span></div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Kayak al llac Perućac</div>
-            <span class="badge badge-info">Aventura</span>
-          </div>
-          <div class="act-sub">Fins a Bòsnia en kayak pel llac.</div>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Mirador Banjska Stena</div>
-            <span class="badge badge-free">Senderisme</span>
-          </div>
-          <div class="act-sub">Camí des de Mitrovac fins al mirador.</div>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Drina RiverHouse</div>
-            <span class="badge badge-info">Especial</span>
-          </div>
-          <div class="act-sub">Observació d'osos. Cascades d'aigua calenta. Mont Stara Planina.</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Dil 8 ag.</span>
-          <span class="day-title">Tara – Ràfting</span>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Ràfting al riu Drina</div>
-            <span class="badge badge-amber">Per confirmar</span>
-          </div>
-          <div class="act-sub">Activitat d'aventura pendent de confirmar.</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Mar 9 ag.</span>
-          <span class="day-title">Llac de Zahovine</span>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Llac Zahovine</div>
-            <span class="badge badge-info">Joia de Tara</span>
-          </div>
-          <div class="act-sub">Llac de muntanya espectacular. Anomenat "la joia de Tara".</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Dim 10 ag.</span>
-          <span class="day-title">Durmitor, Montenegro</span>
-        </div>
-        <div class="hotel-bar"><i class="ti ti-bed"></i><span>Dormim: <span class="hotel-name">Villa Jelena / Guest House Nela (~45€/nit)</span></span></div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Parc Nacional Durmitor</div>
-            <span class="badge badge-info">UNESCO</span>
-          </div>
-          <div class="act-sub">4h de trajecte. Sortida a les 7h. Aparcar a la vila i caminar fins al Llac Negre.</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Dij 11 ag.</span>
-          <span class="day-title">Bobotov Kuk</span>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Bobotov Kuk (2.523 m)</div>
-            <span class="badge badge-amber">Excursió</span>
-          </div>
-          <div class="act-sub">Pujada al cim de Durmitor. Contacte: amic de Mladen.</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Div 12 ag.</span>
-          <span class="day-title">Tornada a Belgrad</span>
-        </div>
-        <div class="hotel-bar"><i class="ti ti-bed"></i><span>Dormim: <span class="hotel-name">High Note Suites</span></span></div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">Cova de Stopića</div>
-            <span class="badge badge-info">Zlatibor</span>
-          </div>
-          <div class="act-sub">Visita de camí cap a Belgrad.</div>
-        </div>
-      </div>
-
-      <div class="day-section">
-        <div class="day-header">
-          <span class="day-badge">Dis 13 ag.</span>
-          <span class="day-title">Tornada a Barcelona</span>
-        </div>
-        <div class="activity">
-          <div class="act-top">
-            <div class="act-name">✈ Vol de tornada</div>
-            <span class="badge badge-red">18:55 → 21:35</span>
-          </div>
-          <div class="act-sub">Belgrad → Barcelona. Bon viatge!</div>
-        </div>
-      </div>
-
-    </div><!-- /tab-pla -->
-
-    <!-- VOLS -->
-    <div id="tab-vols" class="hidden">
-      <div class="activity" style="margin-top:12px;">
-        <div class="act-top">
-          <div class="act-name">✈ Anada: BCN → Belgrad</div>
-          <span class="badge badge-info">1 ag.</span>
-        </div>
-        <div class="act-sub" style="margin-top:6px;">Arribada 9:55 → 12:30<br>Aeroport Belgrad (BEG)</div>
-      </div>
-      <div class="activity">
-        <div class="act-top">
-          <div class="act-name">✈ Tornada: Belgrad → BCN</div>
-          <span class="badge badge-red">13 ag.</span>
-        </div>
-        <div class="act-sub" style="margin-top:6px;">18:55 → 21:35<br>Durada total del viatge: 13 dies</div>
-      </div>
-    </div>
-
-    <!-- ALLOTJAMENTS -->
-    <div id="tab-allotjaments" class="hidden">
-      <div style="margin-top:12px;">
-        <div class="activity">
-          <div class="act-top"><div class="act-name">High Note Suites</div><span class="badge badge-info">Belgrad</span></div>
-          <div class="act-sub">Nits 1–2 ag. + 12–13 ag. · 4 nits en total</div>
-        </div>
-        <div class="activity">
-          <div class="act-top"><div class="act-name">Apartments Dusica Tekija</div><span class="badge badge-info">Djerdap</span></div>
-          <div class="act-sub">Nits 3–5 ag. · Parc Natural Djerdap · 3 nits</div>
-        </div>
-        <div class="activity">
-          <div class="act-top"><div class="act-name">Konak Studenica 1186</div><span class="badge badge-info">Studenica</span></div>
-          <div class="act-sub">Nit 6 ag. · Al costat del monestir · 1 nit</div>
-        </div>
-        <div class="activity">
-          <div class="act-top"><div class="act-name">Apartmani Romansa Perućac</div><span class="badge badge-info">Tara</span></div>
-          <div class="act-sub">Nits 7–9 ag. · Parc Nacional Tara · 3 nits</div>
-        </div>
-        <div class="activity">
-          <div class="act-top"><div class="act-name">Villa Jelena / Guest House Nela</div><span class="badge badge-amber">~45€/nit</span></div>
-          <div class="act-sub">Nits 10–11 ag. · Montenegro · 2 nits · Via amic de Mladen</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PRESSUPOST -->
-    <div id="tab-pressupost" class="hidden">
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-label">Dies totals</div>
-          <div class="stat-val">13</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Etapes</div>
-          <div class="stat-val">9</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Nits d'allotjament</div>
-          <div class="stat-val">11</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Vaixell Djerdap</div>
-          <div class="stat-val">~15€</div>
-        </div>
-      </div>
-      <div style="margin-top:14px;">
-        <div class="activity">
-          <div class="act-top"><div class="act-name">Monestir Studenica</div><span class="badge badge-free">Gratuït</span></div>
-          <div class="act-sub">Entrada gratuïta. Recordeu: tancat els dilluns.</div>
-        </div>
-        <div class="activity">
-          <div class="act-top"><div class="act-name">Durmitor – Villa Jelena</div><span class="badge badge-amber">~45€/nit</span></div>
-          <div class="act-sub">Contacte via amic de Mladen.</div>
-        </div>
-        <div class="activity">
-          <div class="act-top"><div class="act-name">Patriot Boat Tours</div><span class="badge badge-amber">~15€/pers</span></div>
-          <div class="act-sub">Si sou 5 persones. Reserva prèvia recomanada.</div>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /content -->
-</div><!-- /app -->
+</div>
 
 <script>
-  function showTab(id, btn) {
-    document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.add('hidden'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('tab-' + id).classList.remove('hidden');
-    btn.classList.add('active');
+var stops = [
+  {
+    lat:44.8155756, lng:20.4575349, zoom:17, label:"1", day:"1–3 ag", name:"High Note Suites · Belgrad",
+    nav:"https://www.google.com/maps/dir/?api=1&destination=44.8155756,20.4575349",
+    hotel:"High Note Suites", hotelSub:"Maršala Birjuzova 22, Stari Grad · 2 nits",
+    days:[
+      { label:"Dia 1 · 1 Agost", acts:[
+        { icon:"ti-plane-arrival", text:"Vol BCN 9:55 → Belgrad 12:30 (aeroport internacional)" },
+        { icon:"ti-building-fortress", text:"Passeig pel barri de Kalemegdan Fortress" }
+      ]},
+      { label:"Dia 2 · 2 Agost", acts:[
+        { icon:"ti-car", text:"Recollir cotxe de lloguer" },
+        { icon:"ti-building-fortress", text:"Excursió a Novi Sad: Fortaleza Petrovaradin" },
+        { icon:"ti-tools-kitchen-2", text:"Dinar en una SALA (granja rural amb cuina casolana local)" }
+      ]}
+    ]
+  },
+  {
+    lat:44.6816, lng:22.4170, zoom:11, label:"2", day:"3–6 ag", name:"Apartments Dusica · Tekija (Djerdap)",
+    nav:"https://www.google.com/maps/dir/?api=1&destination=Apartments+Dusica+Tekija+Djerdap+Serbia",
+    hotel:"Apartments Dusica Tekija", hotelSub:"Parc Nacional Djerdap · 3 nits",
+    days:[
+      { label:"Dia 3 · 3 Agost", acts:[
+        { icon:"ti-building-fortress", text:"Fortaleza de Smederevo (la més gran del camp d'Europa)" },
+        { icon:"ti-building-fortress", text:"Fortaleza de Golubac" }
+      ]},
+      { label:"Dia 4 · 4 Agost", acts:[
+        { icon:"ti-sailboat", text:"Creuer pel Djerdap — reservar a les 10h, 15€/persona", tip:{type:"warn", text:"Reservar: krstarenjedjerdapom.com"} },
+        { icon:"ti-current-location", text:"Puertas de Hierro" }
+      ]},
+      { label:"Dia 5 · 5 Agost", acts:[
+        { icon:"ti-mountain", text:"Mirador Veliki Strbac (una de les millors vistes de Sèrbia)" },
+        { icon:"ti-wave-sine", text:"Cañón més llarg d'Europa (130 km) i tram més estret del Danubi" }
+      ]}
+    ]
+  },
+  {
+    lat:43.4807, lng:20.5289, zoom:13, label:"3", day:"6–7 ag", name:"Konak Studenica 1186",
+    nav:"https://www.google.com/maps/dir/?api=1&destination=Konak+Studenica+1186+Serbia",
+    hotel:"Konak Studenica 1186", hotelSub:"Al costat del monestir · 1 nit",
+    days:[
+      { label:"Dia 6 · 6 Agost", acts:[
+        { icon:"ti-car", text:"5 hores en cotxe fins al monestir de Studenica" },
+        { icon:"ti-building-church", text:"Visita Monestir de Studenica — 3 hores (Patrimoni UNESCO)", tip:{type:"ok", text:"Entrada gratuïta · 7:00–21:00h"} },
+        { icon:"ti-alert-triangle", text:"Tancat els dilluns", tip:{type:"warn", text:"Verificar dia de la setmana"} }
+      ]}
+    ]
+  },
+  {
+    lat:43.9817, lng:19.5560, zoom:12, label:"4", day:"7–10 ag", name:"Apartmani Romansa · Perućac (Tara)",
+    nav:"https://www.google.com/maps/dir/?api=1&destination=Apartmani+Romansa+Perucac+Serbia",
+    hotel:"Apartmani Romansa Perucac", hotelSub:"Perućac, Parc Nacional Tara · 3 nits",
+    days:[
+      { label:"Dia 7 · 7 Agost", acts:[
+        { icon:"ti-kayak", text:"Kayak al llac Perućac fins a Bòsnia (Drina RiverHouse)" },
+        { icon:"ti-walk", text:"Mitrovac: caminada fins al mirador de Banjska Stena" },
+        { icon:"ti-paw", text:"Observació d'ossos" },
+        { icon:"ti-droplet", text:"Cascades d'aigua calenta · Mont Stara Planina" }
+      ]},
+      { label:"Dia 8 · 8 Agost", acts:[
+        { icon:"ti-help-circle", text:"A decidir", tip:{type:"info", text:"Possible: Žabljak / Durmitor"} }
+      ]},
+      { label:"Dia 9 · 9 Agost", acts:[
+        { icon:"ti-ripple", text:"Llac Zahovine — \"Joia de Tara\" (llac de muntanya espectacular)", tip:{type:"info", text:"A confirmar si hi anem"} }
+      ]}
+    ]
+  },
+  {
+    lat:43.1562, lng:19.1238, zoom:13, label:"5", day:"10–12 ag", name:"Villa Jelena / Guest House Nela · Žabljak",
+    nav:"https://www.google.com/maps/dir/?api=1&destination=Guest+House+Nela+Zabljak+Montenegro",
+    hotel:"Villa JELENA / Guest House Nela", hotelSub:"Žabljak, Montenegro · 45€/nit · 2 nits (amic de Mladen)",
+    days:[
+      { label:"Dia 10 · 10 Agost", acts:[
+        { icon:"ti-car", text:"Sortir a les 7h — 4h de cotxe fins a Žabljak" },
+        { icon:"ti-trees", text:"Parc Nacional Durmitor (UNESCO) — aparcar al poble" },
+        { icon:"ti-ripple", text:"Caminada al Llac Negre (Zminje Jezero / llac de la Serp)" }
+      ]},
+      { label:"Dia 11 · 11 Agost", acts:[
+        { icon:"ti-help-circle", text:"A decidir", tip:{type:"info", text:"Dia lliure a Durmitor"} }
+      ]}
+    ]
   }
+];
+
+var map = L.map('map').setView([44.8155756, 20.4575349], 17);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap' }).addTo(map);
+
+var markers = [], routeLayer = null;
+
+stops.forEach(function(s, i) {
+  var icon = L.divIcon({ className:'', iconAnchor:[0,10],
+    html:'<div style="background:#185FA5;color:#fff;font-size:11px;font-weight:600;padding:3px 9px;border-radius:12px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,0.25);">'+s.label+' · '+s.day+'</div>'
+  });
+  var popup = '<div style="font-family:sans-serif;min-width:160px;"><b style="font-size:13px;">'+s.name+'</b><br><span style="font-size:12px;color:#666;">'+s.day+'</span><br><br>'
+    +'<a href="'+s.nav+'" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:#185FA5;color:#fff;font-size:12px;font-weight:500;padding:6px 12px;border-radius:6px;text-decoration:none;">▶ Navegar</a></div>';
+  markers.push(L.marker([s.lat, s.lng], {icon:icon}).addTo(map).bindPopup(popup));
+});
+
+function tipHtml(tip) {
+  if (!tip) return '';
+  var cls = tip.type==='warn'?'tip-warn':tip.type==='ok'?'tip-ok':'tip-info';
+  var ic = tip.type==='warn'?'ti-alert-triangle':tip.type==='ok'?'ti-circle-check':'ti-info-circle';
+  return '<div class="tip-pill '+cls+'"><i class="ti '+ic+'" style="font-size:11px;"></i>'+tip.text+'</div>';
+}
+
+function renderInfo(s) {
+  var h = '<div class="hotel-bar"><i class="ti ti-bed"></i><div><div class="hname">'+s.hotel+'</div><div class="hsub">'+s.hotelSub+'</div></div></div>';
+  s.days.forEach(function(d) {
+    h += '<div class="day-block"><div class="day-dot"></div><div class="day-label">'+d.label+'</div>';
+    d.acts.forEach(function(a) {
+      h += '<div class="act-item"><i class="ti '+a.icon+'"></i><div class="act-text">'+a.text+(a.tip?tipHtml(a.tip):'')+'</div></div>';
+    });
+    h += '</div>';
+  });
+  return h;
+}
+
+function renderRoute() {
+  var h = '<div class="hotel-bar"><i class="ti ti-route"></i><div><div class="hname">Resum del viatge</div><div class="hsub">1 Agost → 13 Agost · 13 dies</div></div></div>';
+  var summary = [
+    {day:"1–3 ag", place:"Belgrad", icon:"ti-building-community", note:"2 nits · High Note Suites"},
+    {day:"3–6 ag", place:"Djerdap", icon:"ti-wave-sine", note:"3 nits · Apartments Dusica Tekija"},
+    {day:"6–7 ag", place:"Studenica", icon:"ti-building-church", note:"1 nit · Konak Studenica 1186"},
+    {day:"7–10 ag", place:"Tara / Perućac", icon:"ti-trees", note:"3 nits · Apartmani Romansa"},
+    {day:"10–12 ag", place:"Žabljak (Montenegro)", icon:"ti-mountain", note:"2 nits · Villa Jelena (45€/nit)"},
+    {day:"12–13 ag", place:"Belgrad → BCN", icon:"ti-plane-departure", note:"Vol 18:55 → 21:35 Barcelona"}
+  ];
+  summary.forEach(function(r) {
+    h += '<div class="day-block"><div class="day-dot"></div><div class="day-label">'+r.day+'</div>'
+      +'<div class="act-item"><i class="ti '+r.icon+'"></i><div class="act-text">'+r.place+'<div class="tip-pill tip-info" style="margin-top:3px;">'+r.note+'</div></div></div></div>';
+  });
+  return h;
+}
+
+function showStop(i, btn) {
+  document.querySelectorAll('.stop-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  if (routeLayer) { map.removeLayer(routeLayer); routeLayer = null; }
+  if (i === 5) {
+    document.getElementById('nav-label').textContent = 'Obrir ruta completa a Google Maps';
+    document.getElementById('nav-btn').href = 'https://www.google.com/maps/dir/44.8155756,20.4575349/44.6816,22.417/43.4807,20.5289/43.9817,19.556/43.1562,19.1238/44.8155756,20.4575349';
+    var coords = stops.map(function(s){ return [s.lat, s.lng]; });
+    coords.push([stops[0].lat, stops[0].lng]);
+    routeLayer = L.polyline(coords, {color:'#378ADD', weight:3, dashArray:'8,6', opacity:0.9}).addTo(map);
+    map.fitBounds(routeLayer.getBounds(), {padding:[30,30]});
+    document.getElementById('info-panel').innerHTML = renderRoute();
+  } else {
+    var s = stops[i];
+    document.getElementById('nav-label').textContent = 'Navegar a ' + s.name;
+    document.getElementById('nav-btn').href = s.nav;
+    map.setView([s.lat, s.lng], s.zoom);
+    markers[i].openPopup();
+    document.getElementById('info-panel').innerHTML = renderInfo(s);
+  }
+}
+
+markers[0].openPopup();
+document.getElementById('info-panel').innerHTML = renderInfo(stops[0]);
 </script>
 </body>
 </html>
